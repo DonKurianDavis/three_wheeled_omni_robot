@@ -1,0 +1,130 @@
+<?xml version = "1.0"?>
+<robot name="omni_robot" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:arg name="sim_mode" default="true"/>
+    <xacro:arg name="use_mock_hardware" default="false"/>
+    <xacro:include filename="$(find three_wheeled_omni_robot_description)/urdf/material.urdf"/>
+    <xacro:include filename="$(find three_wheeled_omni_robot_description)/urdf/wheel/omni_wheel.urdf.xacro"/>
+    <xacro:if value="$(arg sim_mode)">
+        <xacro:include filename="$(find three_wheeled_omni_robot_description)/urdf/robot/omni_robot_ros2_control_gazebo.xacro"/>
+    </xacro:if>
+    <xacro:unless value="$(arg sim_mode)">
+        <xacro:include filename="$(find three_wheeled_omni_robot_description)/urdf/robot/omni_robot_ros2_control.xacro"/>
+        <xacro:omnirobot_ros2_control name="OmniBot" use_mock_hardware="$(arg use_mock_hardware)"/>
+    </xacro:unless>
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_footprint"/>
+        <child link="base_link"/>
+        <origin xyz="0 0 0.08" rpy="0 0 0"/>
+    </joint>
+    
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <xacro:if value="$(arg sim_mode)">
+                    <mesh filename="file://$(find three_wheeled_omni_robot_description)/meshes/frame/base_link.stl" scale="0.001 0.001 0.001"/>
+                </xacro:if>
+                <xacro:unless value="$(arg sim_mode)">
+                    <mesh filename="package://three_wheeled_omni_robot_description/meshes/frame/base_link.stl" scale="0.001 0.001 0.001"/>
+                </xacro:unless>
+            </geometry>
+            <material name="black"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="file://$(find three_wheeled_omni_robot_description)/meshes/frame/base_link.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.4"/>
+            <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
+        </inertial>
+    </link>
+
+    <link name="base_footprint">
+    </link>
+
+    <link name="lidar">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.05" length="0.04"/>
+            </geometry>
+            <material name="grey"/>
+        </visual>
+        <collision>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <cylinder radius="0.05" length="0.04"/>
+            </geometry>
+        </collision>
+        <inertial>
+            <mass value="0.1"/>
+            <inertia ixx="0.000075833" ixy="0.0" ixz="0.0" iyy="0.000075833" iyz="0.0" izz="0.000125"/>
+        </inertial> 
+    </link>
+
+
+    <joint name="lidar_joint" type="fixed">
+        <parent link="base_link"/>
+        <child link="lidar"/>
+        <origin xyz="0 0 0.325" rpy="0 0 0"/>
+    </joint>
+
+    <xacro:omni_wheel wheel_name="back"/>
+    <joint name="back_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="back_wheel_link"/>
+        <origin xyz="-0.16 9.743e-5 -0.03" rpy="0 0 -1.5707"/>
+        <axis xyz="0 -1 0"/>
+    </joint>
+
+    <xacro:omni_wheel wheel_name="right"/>
+    <joint name="right_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="right_wheel_link"/>
+        <origin xyz="0.08 -0.139 -0.03" rpy="0 0 0.52359878"/>
+        <axis xyz="0 -1 0"/>
+    </joint>
+
+    <xacro:omni_wheel wheel_name="left"/>
+    <joint name="left_wheel_joint" type="continuous">
+        <parent link="base_link"/>
+        <child link="left_wheel_link"/>
+        <origin xyz="0.08 0.139 -0.03" rpy="0 0 2.61799388"/>
+        <axis xyz="0 -1 0"/>
+    </joint>
+
+    <xacro:if value="$(arg sim_mode)">
+        <gazebo reference="base_link">
+            <mu1>0.8</mu1>
+            <mu2>0.8</mu2>
+            <material>Gazebo/Black</material>
+        </gazebo>
+        <gazebo reference="lidar">
+            <material>Gazebo/Gray</material>
+            <sensor name="laser" type="gpu_lidar">
+                <pose> 0 0 0 0 0 0 </pose>
+                <visualize>true</visualize>
+                <update_rate>10</update_rate>
+                <lidar>
+                    <scan>
+                        <horizontal>
+                            <samples>360</samples>
+                            <min_angle>-3.14</min_angle>
+                            <max_angle>3.14</max_angle>
+                        </horizontal>
+                    </scan>
+                    <range>
+                        <min>0.3</min>
+                        <max>12</max>
+                    </range>
+                </lidar>
+                <topic>scan</topic>
+                <gz_frame_id>lidar</gz_frame_id>
+            </sensor>
+        </gazebo>
+    </xacro:if>
+</robot>

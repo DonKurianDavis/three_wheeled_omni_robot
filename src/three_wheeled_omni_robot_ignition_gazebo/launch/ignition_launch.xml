@@ -1,0 +1,31 @@
+<launch>
+    <arg name="simulation_mode" default="true"/>
+    <include file="$(find-pkg-share three_wheeled_omni_robot_description)/launch/bot_launch.xml">
+        <arg name="simulation_mode" value="$(var simulation_mode)"/>
+    </include>
+
+    <arg name="world"
+         default="$(find-pkg-share three_wheeled_omni_robot_ignition_gazebo)/worlds/empty.world" />
+
+
+    <include file="$(find-pkg-share ros_gz_sim)/launch/gz_sim.launch.py">
+        <arg name="gz_args" value="-r -v4 $(var world)"/>
+        <arg name="on_exit_shutdown" value="true"/>
+    </include>
+    
+    <node pkg="ros_gz_sim" exec="create" name="spawn" output="screen"
+        args="-name three_wheeled_omni_robot
+              -topic robot_description
+              -z 0.3"/>
+
+    <node pkg="ros_gz_bridge" exec="parameter_bridge" name="gz_bridge" output="screen">
+        <param name="config_file" value="$(find-pkg-share three_wheeled_omni_robot_ignition_gazebo)/config/gz_bridge.yaml"/>
+    </node>
+
+    <node pkg="controller_manager" exec="spawner" 
+        args="joint_state_broadcaster --controller-manager /controller_manager"/>
+
+    <node pkg="controller_manager" exec="spawner" 
+        args="omni_wheel_drive_controller --controller-manager /controller_manager"/>
+                  
+</launch>

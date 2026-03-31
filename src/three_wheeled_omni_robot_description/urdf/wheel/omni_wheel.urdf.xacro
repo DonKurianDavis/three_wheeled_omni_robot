@@ -1,0 +1,186 @@
+<?xml version = "1.0"?>
+<robot name="omni_wheel" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find three_wheeled_omni_robot_description)/urdf/wheel/roller.urdf.xacro"/>
+    <xacro:macro name="omni_wheel" params="wheel_name">
+        <link name="${wheel_name}_wheel_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <xacro:if value="$(arg sim_mode)">
+                        <mesh filename="file://$(find three_wheeled_omni_robot_description)/meshes/omni_wheel/wheel.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if>
+                    <xacro:unless value="$(arg sim_mode)">
+                        <mesh filename="package://three_wheeled_omni_robot_description/meshes/omni_wheel/wheel.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:unless>
+                </geometry>
+                <material name="blue"/>
+            </visual>
+            <collision>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <xacro:if value="$(arg sim_mode)">
+                        <mesh filename="file://$(find three_wheeled_omni_robot_description)/meshes/omni_wheel/wheel.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if>
+                    <xacro:unless value="$(arg sim_mode)">
+                        <mesh filename="package://three_wheeled_omni_robot_description/meshes/omni_wheel/wheel.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:unless>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.151"/>
+                <inertia ixx="0.00024189" ixy="0.0" ixz="0.0" iyy="0.00024189" iyz="0.0" izz="0.00006875"/>
+            </inertial>
+        </link>
+        <xacro:if value="$(arg sim_mode)">
+            <gazebo reference="${wheel_name}_wheel_link">
+                <mu1>0.8</mu1>
+                <mu2>0.8</mu2>
+                <material>Gazebo/Blue</material>
+            </gazebo>
+        </xacro:if>
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_1"/>
+        <joint name="${wheel_name}_roller_1_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_1_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="-0.00687 0.007 0.039914" rpy="0 -0.174533 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_2"/>
+        <joint name="${wheel_name}_roller_2_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_2_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="-0.031 0.007 0.02613" rpy="0 -0.8727 0"/>
+        </joint>
+    
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_3"/>
+        <joint name="${wheel_name}_roller_3_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_3_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="-0.041 0.007 0.000159" rpy="0 -1.5708 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_4"/>
+        <joint name="${wheel_name}_roller_4_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_4_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="-0.031 0.007 -0.025915" rpy="0 -2.2689 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_5"/>
+        <joint name="${wheel_name}_roller_5_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_5_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="-0.007185 0.007 -0.039858" rpy="0 -2.9671 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_6"/>
+        <joint name="${wheel_name}_roller_6_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_6_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="0.02 0.007 -0.035148" rpy="0 -3.6652 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_7"/>
+        <joint name="${wheel_name}_roller_7_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_7_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="0.038 0.007 -0.013942" rpy="0 -4.3633 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_8"/>
+        <joint name="${wheel_name}_roller_8_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_8_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="0.038 0.007 0.013706" rpy="0 -5.0615 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_9"/>
+        <joint name="${wheel_name}_roller_9_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_9_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="0.02 0.007 0.035" rpy="0 -5.7596 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_10"/>
+        <joint name="${wheel_name}_roller_10_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_10_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="0.007 0.029 0.039858" rpy="0 0.174533 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_11"/>
+        <joint name="${wheel_name}_roller_11_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_11_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="0.031 0.029 0.025915" rpy="0 0.8727 0"/>
+        </joint>
+    
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_12"/>
+        <joint name="${wheel_name}_roller_12_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_12_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="0.040501 0.029 -0.000159" rpy="0 1.5708 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_13"/>
+        <joint name="${wheel_name}_roller_13_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_13_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="0.030949 0.029 -0.026125" rpy="0 2.2689 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_14"/>
+        <joint name="${wheel_name}_roller_14_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_14_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="0.00687 0.029 -0.039914" rpy="0 2.9671 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_15"/>
+        <joint name="${wheel_name}_roller_15_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_15_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="-0.020384 0.029 -0.034997" rpy="0 3.6652 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_16"/>
+        <joint name="${wheel_name}_roller_16_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_16_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="-0.038 0.029 -0.013706" rpy="0 4.3633 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_17"/>
+        <joint name="${wheel_name}_roller_17_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_17_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="-0.038 0.029 0.013942" rpy="0 5.0615 0"/>
+        </joint>
+
+        <xacro:roller wheel_name="${wheel_name}" roller_name="roller_18"/>
+        <joint name="${wheel_name}_roller_18_joint" type="continuous">
+            <parent link="${wheel_name}_wheel_link"/>
+            <child link="${wheel_name}_roller_18_link"/>
+            <axis xyz="1 0 0"/>
+            <origin xyz="-0.02 0.029 0.035" rpy="0 5.7596 0"/>
+        </joint>
+
+    </xacro:macro>
+</robot>

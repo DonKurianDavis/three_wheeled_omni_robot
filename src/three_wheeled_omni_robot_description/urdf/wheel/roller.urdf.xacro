@@ -1,0 +1,43 @@
+<?xml version = "1.0"?>
+<robot name="roller" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:macro name="roller" params="wheel_name roller_name">
+        <link name= "${wheel_name}_${roller_name}_link">
+            <visual>
+                <origin xyz="-0.009 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <xacro:if value="$(arg sim_mode)">
+                        <mesh filename="file://$(find three_wheeled_omni_robot_description)/meshes/omni_wheel/roller.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if>
+                    <xacro:unless value="$(arg sim_mode)">
+                        <mesh filename="package://three_wheeled_omni_robot_description/meshes/omni_wheel/roller.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:unless>
+                </geometry>
+                <material name="grey"/>
+            </visual>
+            <collision>
+                <origin xyz="-0.009 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <xacro:if value="$(arg sim_mode)">
+                        <mesh filename="file://$(find three_wheeled_omni_robot_description)/meshes/omni_wheel/roller.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:if>
+                    <xacro:unless value="$(arg sim_mode)">
+                        <mesh filename="package://three_wheeled_omni_robot_description/meshes/omni_wheel/roller.stl" scale="0.001 0.001 0.001"/>
+                    </xacro:unless>
+                </geometry>
+            </collision>
+            <inertial>
+                <mass value="0.006"/>
+                <inertia ixx="2.865e-7" ixy="0.0" ixz="0.0" iyy="3.074e-7" iyz="0.0" izz="3.074e-7"/>
+            </inertial>
+        </link>
+        <xacro:if value="$(arg sim_mode)">
+            <gazebo reference="${wheel_name}_${roller_name}_link">
+                <fdir1>1 0 0"</fdir1>
+                <mu1>100</mu1>
+                <mu2>100</mu2>
+                <minDepth>0.001</minDepth>
+                <material>Gazebo/Gray</material>
+            </gazebo>
+        </xacro:if>
+    </xacro:macro>
+</robot>
